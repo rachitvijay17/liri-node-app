@@ -17,6 +17,8 @@ var method = process.argv[2];
 var input = process.argv[3];
 //console.log(input);
 
+var output = [];
+
 function moviethis(){
 
     if(process.argv.length < 4 && process.argv.length>2){
@@ -30,14 +32,25 @@ function moviethis(){
     axios.get(queryUrl).then(
         function(response) {
 
-            console.log("Title of the movie                     : " + response.data.Title);
-            console.log("Year the movie came out                : " + response.data.Year);
-            console.log("IMDB Rating of the movie               : " + response.data.imdbRating);
-            console.log("Rotten Tomatoes Rating of the movie    : " + response.data.Rated);
-            console.log("Country where the movie was produced   : " + response.data.Country);
-            console.log("Language of the movie                  : " + response.data.Language);
-            console.log("Plot of the movie                      : " + response.data.Plot);
-            console.log("Actors in the movie                    : " + response.data.Actors);
+            output = [
+            "**************************************************************************************",
+            "Title of the movie                     : " + response.data.Title,
+            "Year the movie came out                : " + response.data.Year,
+            "IMDB Rating of the movie               : " + response.data.imdbRating,
+            "Rotten Tomatoes Rating of the movie    : " + response.data.Rated,
+            "Country where the movie was produced   : " + response.data.Country,
+            "Language of the movie                  : " + response.data.Language,
+            "Plot of the movie                      : " + response.data.Plot,
+            "Actors in the movie                    : " + response.data.Actors,
+            "**************************************************************************************"
+            ].join("\n\n");
+
+            console.log(output);
+
+            fs.appendFile("log.txt", output, function(err) {
+                if (err) throw err;
+               
+              });
         }
       );
 };
@@ -52,11 +65,21 @@ function concert_this(){
 
             for (var i = 0; i<=response.data.length; i++){
                 var date = response.data[i].datetime;
-                console.log("********************************************************************************************");
-                console.log("Name of the venue          : "+response.data[i].venue.name);
-                console.log("Venue location             : "+response.data[i].venue.city+", "+response.data[0].venue.country);
-                console.log("Date of the Event          : "+moment(date).format("MM/DD/YYYY"));
-                console.log("********************************************************************************************");
+                output = [
+                "********************************************************************************************",
+                "Name of the venue          : "+response.data[i].venue.name,
+                "Venue location             : "+response.data[i].venue.city+", "+response.data[0].venue.country,
+                "Date of the Event          : "+moment(date).format("MM/DD/YYYY"),
+                "********************************************************************************************"
+                ].join("\n\n");
+
+                console.log(output);
+
+                fs.appendFile("log.txt", output, function(err) {
+                    if (err) throw err;
+                   
+                  });
+
             }
         }
     )
@@ -73,12 +96,22 @@ function spotifythis(){
 
       for (var i = 0; i< data.tracks.items.length; i++){
 
-            console.log("************************************************************************************");
-            console.log("Artist(s)                              : "+data.tracks.items[i].artists[0].name); 
-            console.log("The song's name                        : "+data.tracks.items[i].name);
-            console.log("A preview link of the song from Spotify: "+data.tracks.items[i].preview_url);
-            console.log("The album that the song is from        : "+data.tracks.items[i].album.name)
-            console.log("************************************************************************************");
+            output = [
+
+            "************************************************************************************",
+            "Artist(s)                              : "+data.tracks.items[i].artists[0].name,
+            "The song's name                        : "+data.tracks.items[i].name,
+            "A preview link of the song from Spotify: "+data.tracks.items[i].preview_url,
+            "The album that the song is from        : "+data.tracks.items[i].album.name,
+            "************************************************************************************"
+            ].join("\n\n");
+
+            console.log(output);
+
+                fs.appendFile("log.txt", output, function(err) {
+                    if (err) throw err;
+                   
+                  });
 
       }
 
